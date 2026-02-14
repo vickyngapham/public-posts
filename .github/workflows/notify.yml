@@ -25,3 +25,9 @@ jobs:
           repository: phuanh004/vickysold.com
           event-type: posts-updated
           client-payload: '{"changed_files": "${{ steps.changed.outputs.files }}"}'
+
+      - name: Sync posts to Firestore
+        run: |
+          curl -s -X POST "${{ secrets.SITE_URL }}/api/sync-posts" \
+            -H "Authorization: Bearer ${{ secrets.POSTS_SYNC_SECRET }}" \
+            -H "Content-Type: application/json"

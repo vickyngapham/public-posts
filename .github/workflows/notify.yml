@@ -28,6 +28,13 @@ jobs:
 
       - name: Sync posts to Firestore
         run: |
-          curl -s -X POST "${{ secrets.SITE_URL }}/api/sync-posts" \
+          RESPONSE=$(curl -s -w "\nHTTP_STATUS:%{http_code}" -X POST "${{ secrets.SITE_URL }}/api/sync-posts" \
             -H "Authorization: Bearer ${{ secrets.POSTS_SYNC_SECRET }}" \
-            -H "Content-Type: application/json"
+            -H "Content-Type: application/json")
+          HTTP_STATUS=$(echo "$RESPONSE" | tail -1 | sed 's/HTTP_STATUS://')
+          BODY=$(echo "$RESPONSE" | sed '$d')
+          echo "Status: $HTTP_STATUS"
+          echo "Response: $BODY"
+          if [ "$HTTP_STATUS" -ge 400 ]; then
+            echo "::warning::Sync returned HTTP $HTTP_STATUS"
+          fi

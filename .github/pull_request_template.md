@@ -2,9 +2,19 @@
 
 <!-- Briefly describe the post or image changes -->
 
+## Locales included
+
+<!-- Check which locales are included in this PR -->
+
+- [ ] English (`posts/en/`)
+- [ ] Vietnamese (`posts/vi/`)
+- [ ] Spanish (`posts/es/`)
+- [ ] Korean (`posts/ko/`)
+
 ## Checklist
 
-- [ ] MDX frontmatter includes all required fields (`title`, `slug`, `author`, `date`)
+- [ ] English post has all required frontmatter fields (`title`, `slug`, `author`, `date`)
+- [ ] Translation posts have required fields (`title`, `slug`) matching the English post
 - [ ] Slug is URL-safe (lowercase alphanumeric + hyphens)
 - [ ] Date is valid ISO 8601 format
 - [ ] Images include `.webp` and `.avif` variants alongside the source

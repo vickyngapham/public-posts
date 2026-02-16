@@ -89,7 +89,7 @@ relatedArticles:
 ---
 ```
 
-> **Note:** The `author` field should be a member slug (e.g., `vicky-nga`) matching a file in `members/`. The sync endpoint resolves the author's name, avatar, bio, and profile link from the member data automatically. Legacy posts with full author fields (`authorTitle`, `authorAvatar`, `authorBio`, `authorLink`) are still supported for backwards compatibility.
+> **Note:** The `author` field should be a member slug (e.g., `vicky-nga`) matching a file in `profile/`. The sync endpoint resolves the author's name, avatar, bio, and profile link from the member data automatically. Legacy posts with full author fields (`authorTitle`, `authorAvatar`, `authorBio`, `authorLink`) are still supported for backwards compatibility.
 
 ### 2b. Add frontmatter (translations)
 

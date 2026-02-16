@@ -7,14 +7,14 @@ This repository manages blog/article content separately from the main site, enab
 ## Folder structure
 
 ```
-members/          # Team member YAML files (single source of truth)
+profile/          # Team member YAML profiles (single source of truth)
 posts/
   en/             # English posts (primary — full frontmatter)
   vi/             # Vietnamese translations (minimal frontmatter)
   es/             # Spanish translations
   ko/             # Korean translations
 images/           # Shared images (.jpg + .webp + .avif)
-  members/        # Member avatars & portrait photos
+  profile/        # Profile avatars & portrait photos
 scripts/          # Validation & utility scripts
 .github/          # CI workflows, CODEOWNERS, PR template
 ```
@@ -63,10 +63,10 @@ cp posts/vi/_template.mdx posts/vi/existing-article-slug.mdx
 
 ### Sync process
 
-The sync endpoint first syncs `members/*.yml` files to Firestore's `members` collection, then iterates each locale directory (`posts/en/`, `posts/vi/`, `posts/es/`, `posts/ko/`), parses frontmatter, and builds a merged Firestore document per slug:
+The sync endpoint first syncs `profile/*.yml` files to Firestore's `profiles` collection, then iterates each locale directory (`posts/en/`, `posts/vi/`, `posts/es/`, `posts/ko/`), parses frontmatter, and builds a merged Firestore document per slug:
 
 ```
-members/{slug}                        ← from members/*.yml
+profiles/{slug}                       ← from profile/*.yml
   slug, name, avatar, photoUrl, roleKey, email, phone, certifications
 
 posts/{slug}

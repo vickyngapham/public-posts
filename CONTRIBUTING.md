@@ -12,40 +12,59 @@ cd public-posts
 # 2. Create a branch
 git checkout -b post/your-article-slug
 
-# 3. Add your post file
-cp posts/_template.mdx posts/your-article-slug.mdx
+# 3. Add your English post file
+cp posts/en/_template.mdx posts/en/your-article-slug.mdx
 
-# 4. Add images (original + optimized variants)
+# 4. (Optional) Add translations
+cp posts/vi/_template.mdx posts/vi/your-article-slug.mdx
+cp posts/es/_template.mdx posts/es/your-article-slug.mdx
+cp posts/ko/_template.mdx posts/ko/your-article-slug.mdx
+
+# 5. Add images (original + optimized variants)
 #    Place .jpg, .webp, and .avif in images/
 
-# 5. Validate locally
+# 6. Validate locally
 npm install gray-matter glob
 node scripts/validate-frontmatter.mjs
 node scripts/verify-images.mjs
 
-# 6. Commit and push
+# 7. Commit and push
 git add posts/ images/
 git commit -m "post: your article title"
 git push -u origin post/your-article-slug
 
-# 7. Open a PR against main
+# 8. Open a PR against main
 ```
 
 ---
 
 ## Writing a post
 
-### 1. Create the file
+### Directory structure
 
-Create a new `.mdx` file in `posts/`. The filename should match the slug:
+Posts are organized by locale in subdirectories:
 
 ```
-posts/your-article-slug.mdx
+posts/
+  en/                  ← English (primary, full frontmatter)
+  vi/                  ← Vietnamese (translated, minimal frontmatter)
+  es/                  ← Spanish
+  ko/                  ← Korean
 ```
 
-### 2. Add frontmatter
+The English file is the primary source. Translations only need `slug`, `title`, `description`, `category`, and `readTime` — shared fields like `author`, `date`, `heroImage`, `tags`, and `relatedArticles` are inherited from the English file during sync.
 
-Every post starts with a YAML frontmatter block between `---` fences:
+### 1. Create the English file
+
+Create a new `.mdx` file in `posts/en/`. The filename should match the slug:
+
+```
+posts/en/your-article-slug.mdx
+```
+
+### 2. Add frontmatter (English)
+
+Every English post starts with a YAML frontmatter block between `---` fences:
 
 ```mdx
 ---
@@ -76,9 +95,23 @@ relatedArticles:
 ---
 ```
 
+### 2b. Add frontmatter (translations)
+
+Translation files only need locale-specific fields. Shared fields are inherited from English:
+
+```mdx
+---
+slug: "5-negotiation-scripts"
+title: "5 Kịch Bản Đàm Phán Giúp Thắng Trong Tình Huống Nhiều Đề Xuất"
+description: "Kịch bản và hướng dẫn đàm phán giúp thắng trong tình huống nhiều đề xuất."
+category: "Chiến Lược Thành Công Cho Đại Lý"
+readTime: "5 phút đọc"
+---
+```
+
 ### Frontmatter field reference
 
-#### Required fields (CI enforced)
+#### Required fields — English posts (CI enforced)
 
 | Field | Type | Rules | Example |
 |---|---|---|---|
@@ -86,6 +119,13 @@ relatedArticles:
 | `slug` | string | Lowercase alphanumeric + hyphens only | `"5-negotiation-scripts"` |
 | `author` | string | Non-empty author name | `"Vicky Nga"` |
 | `date` | string | ISO 8601 format (YYYY-MM-DD) | `"2026-01-21"` |
+
+#### Required fields — Translation posts (CI enforced)
+
+| Field | Type | Rules | Example |
+|---|---|---|---|
+| `title` | string | Translated headline | `"5 Kịch Bản Đàm Phán..."` |
+| `slug` | string | Same slug as English (must match) | `"5-negotiation-scripts"` |
 
 #### Recommended fields
 
@@ -105,7 +145,7 @@ relatedArticles:
 
 #### Categories
 
-Use one of these standard categories:
+Use one of these standard categories (translate for locale files):
 
 - `Agent Success Strategies`
 - `Training`
@@ -300,7 +340,7 @@ of supply across the county.
 ## Pull request process
 
 1. **Branch** from `main` using the naming convention `post/your-slug`.
-2. **Add** your `.mdx` file in `posts/` and images in `images/`.
+2. **Add** your `.mdx` file in `posts/en/` (and optionally `posts/vi/`, `posts/es/`, `posts/ko/`) and images in `images/`.
 3. **Validate** locally:
    ```bash
    npm install gray-matter glob
@@ -310,7 +350,7 @@ of supply across the county.
 4. **Push** and open a PR against `main`.
 5. **CI runs automatically** — it validates frontmatter and checks image variants.
 6. **A code owner reviews** your PR before merge.
-7. **On merge**, the notify workflow dispatches an event to the main site to revalidate.
+7. **On merge**, the notify workflow dispatches an event to the main site to revalidate and sync all locales to Firestore.
 
 ## Commit message format
 

@@ -2,7 +2,9 @@ import { readFileSync } from "fs";
 import { globSync } from "glob";
 import matter from "gray-matter";
 
-const REQUIRED_FIELDS = ["title", "slug", "author", "date"];
+// English posts require full frontmatter; locale translations only need slug + title
+const EN_REQUIRED = ["title", "slug", "author", "date"];
+const LOCALE_REQUIRED = ["title", "slug"];
 const SLUG_RE = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 
 const files = globSync("posts/**/*.mdx");
@@ -15,10 +17,17 @@ if (files.length === 0) {
 let errors = 0;
 
 for (const file of files) {
+  // Skip template files
+  if (file.includes("_template")) continue;
+
   const raw = readFileSync(file, "utf8");
   const { data } = matter(raw);
 
-  for (const field of REQUIRED_FIELDS) {
+  // Determine if this is an English file or a locale translation
+  const isEnglish = file.startsWith("posts/en/") || !file.match(/^posts\/(vi|es|ko)\//);
+  const required = isEnglish ? EN_REQUIRED : LOCALE_REQUIRED;
+
+  for (const field of required) {
     if (!data[field] || String(data[field]).trim() === "") {
       console.error(`${file}: missing or empty required field "${field}"`);
       errors++;

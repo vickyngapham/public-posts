@@ -15,20 +15,22 @@ jobs:
       - name: Get changed files
         id: changed
         run: |
-          FILES=$(git diff --name-only HEAD~1 HEAD | tr '\n' ',')
+          FILES=$(git diff --name-only HEAD~1 HEAD | tr '
+' ',')
           echo "files=$FILES" >> "$GITHUB_OUTPUT"
 
       - name: Send repository_dispatch to main site
         uses: peter-evans/repository-dispatch@v3
         with:
           token: ${{ secrets.REPO_DISPATCH_TOKEN }}
-          repository: phuanh004/vickysold.com
+          repository: vickyngapham/vickysold.com
           event-type: posts-updated
           client-payload: '{"changed_files": "${{ steps.changed.outputs.files }}"}'
 
       - name: Sync posts to Firestore
         run: |
-          RESPONSE=$(curl -s -w "\nHTTP_STATUS:%{http_code}" -X POST "${{ secrets.SITE_URL }}/api/sync-posts" \
+          RESPONSE=$(curl -s -w "
+HTTP_STATUS:%{http_code}" -X POST "${{ secrets.SITE_URL }}/api/sync-posts" \
             -H "Authorization: Bearer ${{ secrets.POSTS_SYNC_SECRET }}" \
             -H "Content-Type: application/json")
           HTTP_STATUS=$(echo "$RESPONSE" | tail -1 | sed 's/HTTP_STATUS://')

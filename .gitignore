@@ -1,0 +1,4 @@
+node_modules/
+
+# Rendered HTML output from scripts/render-mdx.mjs
+posts/**/*.html

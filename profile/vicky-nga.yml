@@ -4,7 +4,13 @@ avatar: /images/profile/vicky-nga-avatar.jpg
 photoUrl: /images/profile/vicky-nga-real-estate-team-leader-san-diego-portrait.jpg
 roleKey: founderRole
 email: vicky@vickysold.com
-phone: "(858) 555-0100"
+phone: "(858) 888-1800"
+instagram: "https://www.instagram.com/vickysold"
+stats:
+  - value: "5 Years"
+    label: Experience
+  - value: Bilingual
+    label: English & Vietnamese
 certifications:
   - name: CRS
     full: Certified Residential Specialist

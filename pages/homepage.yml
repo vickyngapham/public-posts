@@ -1,0 +1,13 @@
+heroHeading: "Your Dream Home Starts Here"
+heroSubheading: "San Diego's trusted real estate team helping families buy, sell, and invest with confidence."
+heroCta: "Get Started"
+heroCtaLink: "/contact"
+heroImage: ""
+stats:
+  - value: "$1B+"
+    label: "Team Volume"
+  - value: "500+"
+    label: "Homes Sold"
+  - value: "5★"
+    label: "Google Rating"
+testimonials: []
